@@ -1,25 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tesla Battery</title>
-    <style>
-        body { font-family: Arial; text-align: center; background: #000; color: #fff; font-size: 3em; }
-    </style>
-</head>
-<body>
-    <div id="battery">Loading...</div>
-    <script>
-        const apiToken = 'qqHSquL1DLab8KkwfY31tBqC5JX4a2GS'; // Replace with your token
-        const vin = '7SAYGDEF4RF048475'; // Replace with your VIN
-        fetch(`https://api.tessie.com/vehicles/${vin}/state`, {
-            headers: { 'Authorization': `Bearer ${apiToken}` }
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('battery').textContent = `${data.battery_level || 'N/A'}%`;
-        })
-        .catch(() => document.getElementById('battery').textContent = 'Error');
-    </script>
-</body>
-</html>
+<script>
+    const apiToken = 'qqHSquL1DLab8KkwfY31tBqC5JX4a2GS'; // Your token
+    const vin = '7SAYGDEF4RF048475'; // Your VIN
+    fetch(`https://api.tessie.com/vehicles/${vin}/state`, {
+        headers: { 'Authorization': `Bearer ${apiToken}` }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        console.log('API Data:', data); // For debugging in browser console
+        document.getElementById('battery').textContent = data.battery_level ? `${data.battery_level}%` : 'N/A%';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('battery').textContent = 'Error%';
+    });
+</script>
